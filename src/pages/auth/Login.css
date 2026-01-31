@@ -1,0 +1,94 @@
+/* src/pages/auth/Login.css */
+* {
+  box-sizing: border-box;
+}
+
+.login-container {
+  min-height: calc(100vh - 80px); /* header height */
+  max-width: 420px;
+  margin: 0 auto;
+  padding: 40px 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Title */
+.login-container h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #111111; /* black text */
+}
+
+/* Labels */
+.login-container label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+  color: #444;
+}
+
+/* Inputs */
+.login-container input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 18px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.login-container input:focus {
+  border-color: #ff512f; /* match header gradient */
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255, 81, 47, 0.2);
+}
+
+/* Login Button */
+.login-container button {
+  width: 100%;
+  padding: 12px;
+
+  /* ✅ Header gradient */
+  background: linear-gradient(to right, #ff512f, #dd2476);
+
+  color: #ffffff; /* ✅ black text */
+  border: none;
+  border-radius: 6px;
+
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.login-container button:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+/* Disabled state */
+.login-container button:disabled {
+  background: linear-gradient(to right, #f3a59a, #e5a3c0);
+  color: #333;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Error message */
+.error {
+  background-color: #ffe6e6;
+  color: #c0392b;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  text-align: center;
+  font-size: 14px;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .login-container {
+    padding: 30px 15px;
+  }
+}

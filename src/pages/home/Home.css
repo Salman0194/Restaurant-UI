@@ -1,0 +1,102 @@
+.home-container {
+  font-family: Arial, sans-serif;
+  background-color: #ffffff;   /* ✅ white background */
+  color: #222222;              /* ✅ dark text */
+}
+
+/* Hero */
+.hero {
+  height: 80vh;
+  background-color: #ffffff;   /* ✅ white hero */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: 3rem;
+  color: #111111;              /* ✅ visible heading */
+}
+
+.hero p {
+  margin: 15px 0;
+  font-size: 1.2rem;
+  color: #555555;              /* ✅ softer subtitle */
+}
+
+.hero-buttons {
+  margin-top: 20px;
+}
+
+/* Buttons */
+.btn {
+  padding: 12px 20px;
+  border-radius: 6px;
+  text-decoration: none;
+  margin: 0 10px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* Primary button */
+.primary {
+  background-color: #ff512f;
+  color: #ffffff;
+  border: none;
+}
+
+.primary:hover {
+  background-color: #dd2476;
+}
+
+/* Secondary button */
+.secondary {
+  background-color: transparent;
+  border: 2px solid #ff512f;
+  color: #ff512f;
+}
+
+.secondary:hover {
+  background-color: #ff512f;
+  color: #ffffff;
+}
+
+/* Features */
+.features {
+  padding: 50px 20px;
+  text-align: center;
+  background-color: #ffffff;   /* ✅ white section */
+}
+
+.features h2 {
+  color: #111111;
+}
+
+/* Feature cards */
+.feature-grid {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.feature-card {
+  background: #f9f9f9;         /* ✅ light card background */
+  padding: 20px;
+  width: 250px;
+  border-radius: 8px;
+  color: #333333;
+}
+
+/* CTA */
+.cta {
+  background: #f3f4f6;          /* ✅ light gray instead of dark */
+  color: #111111;
+  padding: 40px;
+  text-align: center;
+}
+
+.cta button {
+  margin-top: 15px;
+}

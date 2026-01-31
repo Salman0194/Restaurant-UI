@@ -1,0 +1,85 @@
+.orders-container {
+  padding: 30px;
+  background: #f9fafb;
+  min-height: 100vh;
+}
+
+/* Order card */
+.order-card {
+  border: 1px solid #e5e7eb;
+  padding: 20px;
+  margin-bottom: 24px;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* Header */
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+/* Status dropdown */
+.status-select {
+  padding: 6px 18px;
+  border-radius: 20px;
+  border: 1px solid #e5e7eb;
+  font-size: 13px;
+  font-weight: 600;
+  background: #ffffff;
+  cursor: pointer;
+  outline: none;
+
+  /* 🔥 REMOVE native select styling */
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+/* Hover (when enabled) */
+.status-select:not(:disabled):hover {
+  border-color: #ff512f;
+}
+
+/* 🔒 COMPLETED — HIGH VISIBILITY */
+.status-select:disabled {
+  background: linear-gradient(90deg, #ff512f, #dd2476);
+  color: #ffffff;
+  border: none;
+  opacity: 1;                 /* 👈 CRITICAL */
+  cursor: not-allowed;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Table */
+.order-items {
+  width: 100%;
+  margin-top: 15px;
+  border-collapse: collapse;
+}
+
+.order-items th,
+.order-items td {
+  border: 1px solid #e5e7eb;
+  padding: 10px;
+  text-align: center;
+}
+
+.order-items th {
+  background: #f3f4f6;
+  font-weight: 600;
+}
+
+.order-items td:first-child {
+  text-align: left;
+  font-weight: 500;
+}
+
+/* Hide unused legacy styles */
+.status,
+.order-actions {
+  display: none;
+}

@@ -1,0 +1,123 @@
+/* src/components/Header.css */
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+
+  /* Gradient background */
+  background: linear-gradient(to right, #ff512f, #dd2476);
+
+  backdrop-filter: blur(6px);
+  padding: 14px 0;
+}
+
+/* Inner container */
+.header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Logo / Brand */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.brand img {
+  height: 48px;
+  width: auto;
+  border-radius: 50%;
+}
+
+.brand span {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+/* Navigation */
+.nav {
+  display: flex;
+  gap: 40px;
+}
+
+/* Nav Links */
+.nav-item {
+  position: relative;
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+  font-size: 13px;
+  letter-spacing: 2px;
+  font-weight: 600;
+  text-transform: uppercase;
+  transition: color 0.3s ease;
+}
+
+.nav-item:hover {
+  color: #ffffff;
+}
+
+/* Active link */
+.nav-item.active {
+  color: #ffffff;
+}
+
+/* Active dot */
+.nav-item.active::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 6px;
+  height: 6px;
+  background-color: #ffffff;
+  border-radius: 50%;
+}
+
+/* Login / Logout Pill Button */
+.login-pill,
+.logout-pill {
+  background: transparent;
+  color: #ffffff;
+  border: 1px solid #ffffff;
+  padding: 8px 18px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.login-pill:hover,
+.logout-pill:hover {
+  background: #ffffff;
+  color: #dd2476;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .nav {
+    gap: 20px;
+  }
+
+  .nav-item {
+    font-size: 11px;
+    letter-spacing: 1px;
+  }
+
+  .brand span {
+    font-size: 18px;
+  }
+
+  .brand img {
+    height: 40px;
+  }
+}
