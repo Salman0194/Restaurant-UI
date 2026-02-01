@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import axios from "../../api/axios";
 import "./MenuManager.css";
 
@@ -6,9 +6,12 @@ const MenuManager = () => {
   const [items, setItems] = useState([]);
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
-  const [image, setImage] = useState(null); // ✅ NEW
+  const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
   const [editingId, setEditingId] = useState(null);
+
+  // ✅ REF for file input
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     fetchMenu();
@@ -23,11 +26,16 @@ const MenuManager = () => {
     }
   };
 
+  // ✅ Proper reset (including file input)
   const resetForm = () => {
     setName("");
     setPrice("");
     setImage(null);
     setEditingId(null);
+
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -39,18 +47,15 @@ const MenuManager = () => {
       formData.append("name", name);
       formData.append("price", price);
 
-      // ✅ append image only when selected
       if (image) {
         formData.append("image", image);
       }
 
       if (editingId) {
-        // UPDATE (optional image)
         await axios.put(`/menu/${editingId}`, formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
       } else {
-        // CREATE (image required)
         await axios.post("/menu", formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
@@ -69,7 +74,12 @@ const MenuManager = () => {
     setEditingId(item.id);
     setName(item.name);
     setPrice(item.price);
-    setImage(null); // image optional on edit
+    setImage(null);
+
+    // clear previous file visually when editing
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
   };
 
   const handleDelete = async (id) => {
@@ -105,10 +115,11 @@ const MenuManager = () => {
           required
         />
 
-        {/* ✅ Image Upload */}
+        {/* ✅ File input with ref */}
         <input
           type="file"
           accept="image/*"
+          ref={fileInputRef}
           onChange={(e) => setImage(e.target.files[0])}
           required={!editingId}
         />
@@ -124,7 +135,7 @@ const MenuManager = () => {
         )}
       </form>
 
-      {/* Menu List */}
+      {/* Menu Table */}
       <table className="menu-table">
         <thead>
           <tr>
@@ -147,14 +158,25 @@ const MenuManager = () => {
                     <img
                       src={`https://localhost:7191${item.imageUrl}`}
                       alt={item.name}
-                      style={{ width: 60, height: 40, objectFit: "cover" }}
+                      style={{
+                        width: 60,
+                        height: 40,
+                        objectFit: "cover",
+                        borderRadius: 4,
+                      }}
                     />
                   )}
                 </td>
                 <td>{item.name}</td>
                 <td>{item.price}</td>
                 <td>
-                  <button onClick={() => handleEdit(item)}>Edit</button>
+                  <button
+                    className="edit"
+                    onClick={() => handleEdit(item)}
+                  >
+                    Edit
+                  </button>
+
                   <button
                     className="danger"
                     onClick={() => handleDelete(item.id)}

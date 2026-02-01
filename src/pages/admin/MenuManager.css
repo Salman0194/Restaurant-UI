@@ -2,8 +2,8 @@
   padding: 40px;
   max-width: 1000px;
   margin: 40px auto;
-  background: #ffffff;   /* visible background */
-  color: #111111;        /* visible text */
+  background: #ffffff;
+  color: #111111;
   border-radius: 8px;
 }
 
@@ -26,17 +26,26 @@
   border-radius: 4px;
 }
 
+/* Add Item Button (Header Gradient) */
 .menu-form button {
-  padding: 10px 16px;
+  padding: 10px 18px;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
-  background: #4da3ff;
+  background: linear-gradient(90deg, #ff512f, #dd2476);
   color: #fff;
+  font-weight: 500;
+  transition: opacity 0.2s ease, transform 0.15s ease;
 }
 
+.menu-form button:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+/* Cancel Button */
 .menu-form .cancel {
-  background: #999;
+  background: #9ca3af;
 }
 
 /* Table */
@@ -50,7 +59,7 @@
 .menu-table td {
   padding: 12px;
   border-bottom: 1px solid #ddd;
-  color: #111;   /* VERY IMPORTANT */
+  color: #111;
 }
 
 .menu-table th {
@@ -58,7 +67,56 @@
   text-align: left;
 }
 
+/* Action Buttons Spacing */
+.menu-table td button {
+  margin-right: 8px;
+}
+
+.menu-table td button:last-child {
+  margin-right: 0;
+}
+
+/* Edit Button */
+.menu-table .edit {
+  background: linear-gradient(90deg, #38bdf8, #2563eb);
+  color: #ffffff;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+}
+
+.menu-table .edit:hover {
+  opacity: 0.95;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(37, 99, 235, 0.35);
+}
+
+.menu-table .edit:active {
+  transform: scale(0.97);
+  box-shadow: none;
+}
+
+/* Delete Button */
 .menu-table .danger {
   background: #d9534f;
   color: #fff;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.15s ease;
+}
+
+.menu-table .danger:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.menu-table .danger:active {
+  transform: scale(0.97);
 }
