@@ -1,137 +1,83 @@
-/* =========================
-   Page Layout
-========================= */
 .orders-page {
   padding: 30px 60px;
   background-color: #fafafa;
   min-height: 100vh;
 }
 
-.orders-page h2 {
-  font-size: 28px;
-  margin-bottom: 25px;
-  font-weight: 700;
-}
-
-/* =========================
-   Order Card
-========================= */
 .order-card {
-  background: #ffffff;
+  background: #fff;
   border-radius: 12px;
-  padding: 20px 25px;
-  margin-bottom: 25px;
+  padding: 24px;
+  margin-bottom: 24px;
   border: 1px solid #e5e7eb;
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
-/* =========================
-   Order Header
-========================= */
 .order-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 12px;
+  margin-bottom: 15px;
 }
 
-.order-header strong {
-  font-size: 18px;
-  font-weight: 700;
-}
-
-/* =========================
-   Order Status Badge
-========================= */
 .order-status {
   padding: 6px 14px;
   border-radius: 20px;
   font-size: 13px;
   font-weight: 600;
   color: #ffffff;
-  text-transform: capitalize;
+  text-transform: uppercase;
 }
 
-/* Status Colors */
-.order-status.pending {
-  background-color: #f59e0b; /* orange */
-}
+.order-status.pending { background-color: #f59e0b; }
+.order-status.cancelled { background-color: #ef4444; }
+.order-status.delivered { background-color: #3b82f6; }
 
-.order-status.preparing {
-  background-color: #3b82f6; /* blue */
-}
-
-.order-status.completed {
-  background-color: #22c55e; /* green */
-}
-
-.order-status.cancelled {
-  background-color: #ef4444; /* red */
-}
-
-/* =========================
-   Order Meta Info
-========================= */
-.order-card p {
-  margin: 6px 0;
-  font-size: 15px;
-  color: #374151;
-}
-
-/* =========================
-   Orders Table
-========================= */
 .orders-table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 15px;
 }
 
-.orders-table thead {
-  background-color: #f3f4f6;
-}
-
-.orders-table th,
-.orders-table td {
-  padding: 12px 10px;
-  text-align: center;
-  font-size: 14px;
-}
-
 .orders-table th {
-  font-weight: 600;
-  color: #111827;
+  background-color: #f3f4f6;
+  padding: 12px;
   border-bottom: 1px solid #d1d5db;
 }
 
 .orders-table td {
+  padding: 12px;
+  text-align: center;
   border-bottom: 1px solid #e5e7eb;
-  color: #374151;
 }
 
-/* Item name column */
-.orders-table td:first-child {
-  text-align: left;
-  font-weight: 500;
+/* Fix for Button Visibility */
+.order-actions {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid #f3f4f6;
+  display: flex;
+  justify-content: flex-end; /* Pushes button to the right */
 }
 
-/* =========================
-   Responsive
-========================= */
-@media (max-width: 768px) {
-  .orders-page {
-    padding: 20px;
-  }
+.cancel-btn {
+  background-color: #ef4444; /* Tailwind Red-500 */
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
 
-  .orders-table th,
-  .orders-table td {
-    font-size: 13px;
-    padding: 8px;
-  }
+.cancel-btn:hover {
+  background-color: #dc2626; /* Darker red */
+  transform: translateY(-1px);
+}
 
-  .order-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-  }
+.cancel-btn:disabled {
+  background-color: #fca5a5;
+  cursor: not-allowed;
+  transform: none;
 }

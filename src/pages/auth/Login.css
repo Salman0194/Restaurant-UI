@@ -1,94 +1,172 @@
 /* src/pages/auth/Login.css */
+
 * {
   box-sizing: border-box;
 }
 
+/* Page background */
+body {
+  background: #f4f6f9;
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Center Wrapper */
+.login-wrapper {
+  min-height: calc(100vh - 80px); /* Adjust 80px to your navbar height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* The White Card */
 .login-container {
-  min-height: calc(100vh - 80px); /* header height */
-  max-width: 420px;
-  margin: 0 auto;
-  padding: 40px 25px;
+  width: 100%;
+  max-width: 450px;       /* Width of the white card background */
+  background: #ffffff;
+  padding: 50px 30px;     /* Generous padding for a premium feel */
+  border-radius: 16px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.07);
   display: flex;
   flex-direction: column;
-  justify-content: center;
+}
+
+/* Restricted Content Width (The Fix) */
+.login-content {
+  width: 100%;
+  max-width: 320px;       /* 🔥 This controls the width of inputs/button */
+  margin: 0 auto;         /* Centers the form inside the card */
 }
 
 /* Title */
-.login-container h2 {
+.login-content h2 {
   text-align: center;
-  margin-bottom: 25px;
-  color: #111111; /* black text */
+  margin-bottom: 28px;
+  color: #1a1a1a;
+  font-weight: 700;
+  font-size: 26px;
+  letter-spacing: -0.5px;
+}
+
+/* Form Groups */
+.form-group {
+  margin-bottom: 20px;
+  text-align: left;
 }
 
 /* Labels */
-.login-container label {
+.login-content label {
   display: block;
-  margin-bottom: 6px;
-  font-weight: 500;
-  color: #444;
-}
-
-/* Inputs */
-.login-container input {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 18px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #555;
   font-size: 14px;
 }
 
-.login-container input:focus {
-  border-color: #ff512f; /* match header gradient */
+/* Inputs */
+.login-content input {
+  width: 100%;
+  padding: 12px 16px;     /* Increased padding for better touch targets */
+  border: 1.5px solid #e1e1e1;
+  border-radius: 8px;
+  font-size: 15px;
+  transition: all 0.3s ease;
+  background-color: #fafafa;
+}
+
+.login-content input:focus {
+  border-color: #ff512f;
+  background-color: #fff;
   outline: none;
-  box-shadow: 0 0 0 2px rgba(255, 81, 47, 0.2);
+  box-shadow: 0 0 0 4px rgba(255, 81, 47, 0.1);
 }
 
 /* Login Button */
-.login-container button {
+.login-content button {
   width: 100%;
-  padding: 12px;
-
-  /* ✅ Header gradient */
-  background: linear-gradient(to right, #ff512f, #dd2476);
-
-  color: #ffffff; /* ✅ black text */
+  padding: 14px;
+  margin-top: 10px;
+  background: linear-gradient(135deg, #ff512f 0%, #dd2476 100%);
+  color: #fff;
   border: none;
-  border-radius: 6px;
-
-  font-size: 15px;
+  border-radius: 8px;
+  font-size: 16px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
-.login-container button:hover {
-  opacity: 0.9;
-  transform: translateY(-1px);
+.login-content button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(221, 36, 118, 0.3);
+  filter: brightness(1.1);
 }
 
-/* Disabled state */
-.login-container button:disabled {
-  background: linear-gradient(to right, #f3a59a, #e5a3c0);
-  color: #333;
+.login-content button:disabled {
+  background: #ccc;
   cursor: not-allowed;
   transform: none;
+  box-shadow: none;
+}
+
+/* Links Section */
+.forgot-password {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+  color: #666;
+}
+
+.forgot-password span {
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.forgot-password span:hover {
+  color: #dd2476;
+  text-decoration: underline;
+}
+
+.register-link {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 14px;
+  color: #666;
+}
+
+.register-link span {
+  color: #ff512f;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.register-link span:hover {
+  text-decoration: underline;
 }
 
 /* Error message */
 .error {
-  background-color: #ffe6e6;
-  color: #c0392b;
-  padding: 10px;
-  border-radius: 5px;
-  margin-bottom: 15px;
+  background: #fff0f0;
+  color: #d63031;
+  padding: 12px;
+  border-radius: 8px;
+  border-left: 4px solid #d63031;
+  margin-bottom: 20px;
   text-align: center;
   font-size: 14px;
+  font-weight: 500;
 }
 
 /* Responsive */
 @media (max-width: 480px) {
   .login-container {
-    padding: 30px 15px;
+    padding: 40px 20px;
+    border-radius: 0; /* Optional: Full width on very small screens */
+    min-height: 100vh;
+  }
+  
+  .login-content {
+    max-width: 100%;
   }
 }

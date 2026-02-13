@@ -2,9 +2,11 @@
 import { useEffect, useState } from "react";
 import "./Cart.css";
 import { useNavigate } from "react-router-dom";
+import noImage from "../../assets/no-image.png";
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -19,12 +21,11 @@ const Cart = () => {
 
   const subtotal = cartItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
-    0,
+    0
   );
 
   const deliveryFee = cartItems.length > 0 ? 40 : 0;
   const total = subtotal + deliveryFee;
-  const navigate = useNavigate();
 
   return (
     <div className="cart-page">
@@ -43,14 +44,18 @@ const Cart = () => {
         ) : (
           cartItems.map((item) => (
             <div className="cart-row" key={item.id}>
+              {/* ✅ FIXED IMAGE SOURCE */}
               <img
-                src={`https://localhost:7191${item.imageUrl}`}
+                src={`http://localhost:3000/uploads/menu/${item.id}.jpg`}
                 alt={item.name}
+                onError={(e) => (e.target.src = noImage)}
               />
+
               <span>{item.name}</span>
               <span>₹{item.price}</span>
               <span>{item.quantity}</span>
               <span>₹{item.price * item.quantity}</span>
+
               <button onClick={() => removeItem(item.id)}>✖</button>
             </div>
           ))
@@ -61,20 +66,27 @@ const Cart = () => {
       <div className="cart-summary">
         <div className="summary-left">
           <h3>Cart Total</h3>
+
           <div className="summary-line">
             <span>Subtotal</span>
             <span>₹{subtotal}</span>
           </div>
+
           <div className="summary-line">
             <span>Delivery Fee</span>
             <span>₹{deliveryFee}</span>
           </div>
+
           <div className="summary-line total">
             <span>Total</span>
             <span>₹{total}</span>
           </div>
 
-          <button className="checkout-btn" onClick={() => navigate("/payment")}>
+          <button
+            className="checkout-btn"
+            onClick={() => navigate("/payment")}
+            disabled={cartItems.length === 0}
+          >
             PROCEED TO CHECKOUT
           </button>
         </div>
@@ -83,7 +95,7 @@ const Cart = () => {
           <p>If you have promo code, enter here</p>
           <div className="promo-box">
             <input type="text" placeholder="promo code" />
-            <button>Submit</button>
+            <button disabled>Submit</button>
           </div>
         </div>
       </div>

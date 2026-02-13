@@ -1,41 +1,71 @@
-// src/api/axios.js
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "https://localhost:7191/api", // ✅ MUST include /api
+  baseURL: "http://localhost:3000/api",
   headers: {
     "Content-Type": "application/json",
   },
-  // ❌ REMOVE withCredentials
+  withCredentials: true, // required for refresh token cookie
 });
 
-// Attach JWT token
+// ================= REQUEST INTERCEPTOR =================
 axiosInstance.interceptors.request.use(
   (config) => {
-    const user = JSON.parse(localStorage.getItem("user")); // 👈 match AuthContext
-    if (user?.token) {
-      config.headers.Authorization = `Bearer ${user.token}`;
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
     }
+
     return config;
   },
   (error) => Promise.reject(error)
 );
 
-// Handle global errors
+// ================= RESPONSE INTERCEPTOR =================
 axiosInstance.interceptors.response.use(
   (response) => response,
-  (error) => {
-    const isNetworkError = !error.response; // backend down
-    const isUnauthorized = error.response?.status === 401;
+  async (error) => {
+    const originalRequest = error.config;
 
-    if (isNetworkError || isUnauthorized) {
-      console.warn("API unreachable or unauthorized. Logging out.");
+    // Prevent infinite loop
+    if (
+      error.response?.status === 401 &&
+      !originalRequest._retry
+    ) {
+      originalRequest._retry = true;
 
-      // clear auth
-      localStorage.removeItem("user");
+      try {
+        // 🔄 Call refresh token endpoint
+        const response = await axiosInstance.post("/auth/refresh-token");
 
-      // redirect to login
-      window.location.href = "/login";
+        const newAccessToken = response.data.accessToken;
+
+        // ✅ Update token in localStorage
+        localStorage.setItem("token", newAccessToken);
+
+        // ✅ Update user object token
+        const storedUser = JSON.parse(localStorage.getItem("user"));
+        if (storedUser) {
+          storedUser.token = newAccessToken;
+          localStorage.setItem("user", JSON.stringify(storedUser));
+        }
+
+        // Retry original request
+        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+
+        return axiosInstance(originalRequest);
+
+      } catch (refreshError) {
+        console.warn("Refresh failed. Logging out.");
+
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+
+        window.location.href = "/login";
+
+        return Promise.reject(refreshError);
+      }
     }
 
     return Promise.reject(error);

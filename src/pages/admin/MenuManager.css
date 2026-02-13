@@ -17,16 +17,25 @@
   display: flex;
   gap: 10px;
   margin-bottom: 30px;
+  flex-wrap: wrap;
 }
 
-.menu-form input {
+.menu-form input,
+.menu-form select {
   padding: 10px;
   flex: 1;
   border: 1px solid #ccc;
   border-radius: 4px;
 }
 
-/* Add Item Button (Header Gradient) */
+/* Buttons container */
+.form-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* Add / Update Item Button (Header Gradient) */
 .menu-form button {
   padding: 10px 18px;
   border: none;
@@ -39,6 +48,16 @@
 }
 
 .menu-form button:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+/* Add Category Button */
+.menu-form .secondary {
+  background: linear-gradient(90deg, #6366f1, #4f46e5);
+}
+
+.menu-form .secondary:hover {
   opacity: 0.9;
   transform: translateY(-1px);
 }
@@ -119,4 +138,67 @@
 
 .menu-table .danger:active {
   transform: scale(0.97);
+}
+
+/* ================= MODAL STYLES ================= */
+
+/* Backdrop */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* Modal container */
+.modal {
+  background: #ffffff;
+  width: 420px;
+  max-width: 90%;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
+  animation: modalScale 0.2s ease;
+}
+
+/* Animation */
+@keyframes modalScale {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Modal header */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+/* Close button */
+.modal-header .close {
+  background: transparent;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  line-height: 1;
+  color: #555;
+}
+
+.modal-header .close:hover {
+  color: #000;
 }

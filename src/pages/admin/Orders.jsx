@@ -15,10 +15,16 @@ const Orders = () => {
     fetchOrders();
   }, []);
 
+  // ✅ Correct API
   const fetchOrders = async () => {
     try {
-      const response = await axios.get("/order");
-      setOrders(response.data);
+      const response = await axios.get("/orders");
+
+      const data = Array.isArray(response.data)
+        ? response.data
+        : response.data?.data || [];
+
+      setOrders(data);
     } catch (error) {
       console.error("Failed to fetch orders", error);
     } finally {
@@ -26,10 +32,12 @@ const Orders = () => {
     }
   };
 
-  // ✅ FIXED: backend expects status as query param
+  // ✅ Correct status update
   const updateStatus = async (orderId, newStatus) => {
     try {
-      await axios.put(`/order/${orderId}/status?status=${newStatus}`);
+      await axios.put(`/orders/${orderId}/status`, {
+        status: newStatus
+      });
       fetchOrders();
     } catch (error) {
       console.error("Failed to update status", error);
@@ -47,27 +55,30 @@ const Orders = () => {
       ) : (
         orders.map((order) => (
           <div key={order.id} className="order-card">
-            {/* ✅ HEADER: status dropdown moved here */}
+            {/* HEADER */}
             <div className="order-header">
               <h3>Order #{order.id}</h3>
 
               <select
                 value={order.status}
-                disabled={order.status === "Completed"} // 🔒 LOCK WHEN COMPLETED
+                disabled={order.status === "DELIVERED"}
                 onChange={(e) => updateStatus(order.id, e.target.value)}
               >
-                <option value="Pending">Pending</option>
-                <option value="Preparing">Preparing</option>
-                <option value="Completed">Completed</option>
-                <option value="Cancelled">Cancelled</option>
+                <option value="PENDING">Pending</option>
+                <option value="CONFIRMED">Confirmed</option>
+                <option value="DELIVERED">Delivered</option>
+                <option value="CANCELLED">Cancelled</option>
               </select>
             </div>
 
             <p>
-              <strong>Total:</strong> ₹{order.totalAmount}
+              <strong>Total:</strong>{" "}
+              ₹{Number(order.total_amount).toLocaleString("en-IN")}
             </p>
+
             <p>
-              <strong>Date:</strong> {formatDate(order.orderDate)}
+              <strong>Date:</strong>{" "}
+              {formatDate(order.created_at)}
             </p>
 
             <table className="order-items">
@@ -79,9 +90,8 @@ const Orders = () => {
                 </tr>
               </thead>
               <tbody>
-                {order.items.map((item, index) => (
+                {order.items?.map((item, index) => (
                   <tr key={index}>
-                    {/* ✅ FIXED: correct item name */}
                     <td>{item.menuItem?.name}</td>
                     <td>{item.quantity}</td>
                     <td>₹{item.price}</td>

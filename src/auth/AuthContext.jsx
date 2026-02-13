@@ -7,16 +7,18 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Restore user on page refresh
+  // ================= RESTORE USER ON REFRESH =================
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
+
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
+
     setLoading(false);
   }, []);
 
-  // LOGIN
+  // ================= LOGIN =================
   const login = async (email, password) => {
     try {
       const response = await axios.post("/auth/login", {
@@ -24,28 +26,97 @@ export const AuthProvider = ({ children }) => {
         password,
       });
 
-      const loggedInUser = response.data;
-      setUser(loggedInUser);
-      localStorage.setItem("user", JSON.stringify(loggedInUser));
+      const { accessToken, role } = response.data;
 
-      return { success: true };
+      // Create user object manually (backend no longer returns full user)
+      const userData = {
+        email,
+        role,
+        token: accessToken,
+      };
+
+      // Save to localStorage
+      localStorage.setItem("user", JSON.stringify(userData));
+      localStorage.setItem("token", accessToken);
+
+      setUser(userData);
+
+      // 🔥 Merge pendingCart into cart
+      const pendingCart =
+        JSON.parse(localStorage.getItem("pendingCart")) || [];
+
+      if (pendingCart.length > 0) {
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+        pendingCart.forEach((item) => {
+          const index = cart.findIndex(
+            (cartItem) => cartItem.id === item.id
+          );
+
+          if (index !== -1) {
+            cart[index].quantity += item.quantity;
+          } else {
+            cart.push(item);
+          }
+        });
+
+        localStorage.setItem("cart", JSON.stringify(cart));
+        localStorage.removeItem("pendingCart");
+      }
+
+      return { success: true, role };
+
     } catch (error) {
+      const status = error.response?.status;
+
       return {
         success: false,
+        status,
         message:
           error.response?.data?.message || "Invalid email or password",
       };
     }
   };
 
-   // LOGOUT
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem("user");
+  // ================= REFRESH TOKEN =================
+  const refreshAccessToken = async () => {
+    try {
+      const response = await axios.post("/auth/refresh-token");
+
+      const newAccessToken = response.data.accessToken;
+
+      const updatedUser = {
+        ...user,
+        token: newAccessToken,
+      };
+
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+      localStorage.setItem("token", newAccessToken);
+
+      setUser(updatedUser);
+
+      return newAccessToken;
+    } catch (error) {
+      logout();
+      return null;
+    }
   };
 
-  // ROLE CHECKS
-  const isAdmin = () => user?.role === "Admin";
+  // ================= LOGOUT =================
+  const logout = async () => {
+    try {
+      await axios.post("/auth/logout");
+    } catch (err) {
+      console.error("Logout error:", err);
+    }
+
+    setUser(null);
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+  };
+
+  // ================= ROLE CHECKS =================
+  const isAdmin = () => user?.role === "admin";
   const isAuthenticated = () => !!user;
 
   return (
@@ -54,6 +125,7 @@ export const AuthProvider = ({ children }) => {
         user,
         login,
         logout,
+        refreshAccessToken,
         isAdmin,
         isAuthenticated,
         loading,
@@ -64,5 +136,4 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-// Custom hook
 export const useAuth = () => useContext(AuthContext);

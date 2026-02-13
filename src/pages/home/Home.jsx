@@ -15,7 +15,7 @@ const Home = () => {
             <Link to="/menu" className="btn primary">
               View Menu
             </Link>
-            <Link to="/orders" className="btn secondary">
+            <Link to="/my-orders" className="btn secondary">
               My Orders
             </Link>
           </div>

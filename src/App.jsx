@@ -16,6 +16,8 @@ import Home from "./pages/home/Home";
 import AboutUs from "./pages/home/AboutUs";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
+import VerifyEmail from "./pages/auth/VerifyEmail";
+import ForgotPassword from "./pages/auth/ForgotPassword";
 
 // User pages
 import Menu from "./pages/user/Menu";
@@ -40,17 +42,13 @@ const App = () => {
           <Route path="/aboutus" element={<AboutUs />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/verify-email" element={<VerifyEmail />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+
+          <Route path="/menu" element={<Menu />} />
 
           {/* ---------- USER ---------- */}
-          <Route
-            path="/menu"
-            element={
-              <ProtectedRoute allowedRoles={["User"]}>
-                <Menu />
-              </ProtectedRoute>
-            }
-          />
-
+          
           <Route
             path="/cart"
             element={

@@ -1,0 +1,44 @@
+/* Category form container */
+.category-form {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Input */
+.category-form input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+/* Error message */
+.category-error {
+  color: #dc2626;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+/* Save button */
+.category-form button {
+  padding: 10px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  background: linear-gradient(90deg, #22c55e, #16a34a);
+  color: #ffffff;
+  font-weight: 500;
+  transition: opacity 0.2s ease, transform 0.15s ease;
+}
+
+.category-form button:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.category-form button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}

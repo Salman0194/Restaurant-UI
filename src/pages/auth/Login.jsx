@@ -1,23 +1,26 @@
-// src/pages/auth/Login.jsx
 import { useState } from "react";
-import { useNavigate, Navigate } from "react-router-dom";
+import { useNavigate, Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../auth/AuthContext";
+import axios from "../../api/axios";
 import "./Login.css";
 
 const Login = () => {
   const { login, user } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const from = location.state?.from?.pathname || "/menu";
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // ✅ If already logged in, redirect based on role
+  // Redirect if already logged in
   if (user) {
     return (
       <Navigate
-        to={user.role === "Admin" ? "/dashboard" : "/menu"}
+        to={user.role === "admin" ? "/dashboard" : from}
         replace
       />
     );
@@ -29,65 +32,87 @@ const Login = () => {
     setLoading(true);
 
     const result = await login(email, password);
-
     setLoading(false);
 
     if (result.success) {
-      // ✅ Redirect based on role
-      if (result.role === "Admin") {
-        navigate("/dashboard", { replace: true });
-      } else {
-        navigate("/menu", { replace: true });
-      }
+      navigate(
+        result.role === "admin" ? "/dashboard" : from,
+        { replace: true }
+      );
     } else {
-      setError(result.message);
+      // Trigger OTP resend only if email not verified
+      if (
+        result.status === 403 &&
+        result.message?.toLowerCase().includes("verify")
+      ) {
+        try {
+          await axios.post("/auth/resend-otp", { email });
+        } catch (err) {
+          console.error("Auto OTP generation failed:", err);
+        }
+
+        navigate("/verify-email", {
+          state: { email }
+        });
+      } else {
+        setError(result.message || "Login failed");
+      }
     }
   };
 
   return (
-    <div className="login-container">
-      <h2>Login</h2>
+    <div className="login-wrapper">
+      <div className="login-container">
+        {/* This wrapper allows us to constrain the width of the form elements */}
+        <div className="login-content">
+          <h2>Login</h2>
 
-      {error && <p className="error">{error}</p>}
+          {error && <div className="error">{error}</div>}
 
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Email</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            autoComplete="username"
-          />
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label>Email</label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter your email"
+                required
+                autoComplete="username"
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Password</label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter your password"
+                required
+                autoComplete="current-password"
+              />
+            </div>
+
+            <button type="submit" className="login-btn" disabled={loading}>
+              {loading ? "Logging in..." : "Login"}
+            </button>
+          </form>
+
+          <div className="forgot-password">
+            <span onClick={() => navigate("/forgot-password")}>
+              Forgot Password?
+            </span>
+          </div>
+
+          <div className="register-link">
+            Don’t have an account?{" "}
+            <span onClick={() => navigate("/register")}>
+              Register
+            </span>
+          </div>
         </div>
-
-        <div>
-          <label>Password</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            autoComplete="current-password"
-          />
-        </div>
-
-        <button type="submit" disabled={loading}>
-          {loading ? "Logging in..." : "Login"}
-        </button>
-      </form>
-
-      {/* 👇 REGISTER LINK */}
-      <p style={{ marginTop: "15px", textAlign: "center" }}>
-        Don’t have an account?{" "}
-        <span
-          style={{ color: "#1d2671", cursor: "pointer" }}
-          onClick={() => navigate("/register")}
-        >
-          Register
-        </span>
-      </p>
+      </div>
     </div>
   );
 };
